@@ -1,0 +1,92 @@
+-- 친구정보
+CREATE TABLE `FREND` (
+	`FREN_INF`      INT          NOT NULL DEFAULT COMP_NMBR, -- 친구정보
+	`FREN_NM`       VARCHAR(50)  NOT NULL DEFAULT FREN_NM, -- 친구이름
+	`FREN_PHN_NMBR` VARCHAR(30)  NOT NULL DEFAULT FREN_PHN_NMBR, -- 친구전화번호
+	`FREN_EMAIL`    VARCHAR(40)  NULL     DEFAULT FREN_EMAIL, -- 친구이메일
+	`FREN_ADDR`     VARCHAR(255) NULL     DEFAULT FREN_ADDR, -- 친구주소
+	`FREN_PHOTO`    VARCHAR(120) NULL     DEFAULT FREN_PHOTO, -- 친구사진
+	`MMBR_INF`      INT          NOT NULL DEFAULT COMP_NMBR, -- 회원정보
+	`UNIV_NMBR`     INT          NULL     DEFAULT COMP_NMBR, -- 학교정보번호(PK)
+	`COMP_INF`      INT          NULL     DEFAULT COMP_NMBR -- 회사정보
+);
+
+-- 친구정보
+ALTER TABLE `FREND`
+	ADD CONSTRAINT `PK_FREND` -- 친구정보 기본키
+		PRIMARY KEY (
+			`FREN_INF` -- 친구정보
+		);
+
+-- 회원
+CREATE TABLE `MEMBER` (
+	`MMBR_INF`   INT          NOT NULL DEFAULT COMP_NMBR, -- 회원정보
+	`MMBR_NM`    VARCHAR(16)  NOT NULL DEFAULT MMBR_ID, -- 회원이름
+	`MMBR_EMAIL` VARCHAR(40)  NOT NULL DEFAULT FREN_EMAIL, -- 회원이메일
+	`MMBR_ID`    VARCHAR(50)  NOT NULL DEFAULT FREN_NM, -- 회원아이디
+	`MMBR_PHOTO` VARCHAR(120) NULL     DEFAULT FREN_PHOTO -- 회원사진
+);
+
+-- 회원
+ALTER TABLE `MEMBER`
+	ADD CONSTRAINT `PK_MEMBER` -- 회원 기본키
+		PRIMARY KEY (
+			`MMBR_INF` -- 회원정보
+		);
+
+-- 학교정보
+CREATE TABLE `UNIVERCITY` (
+	`UNIV_NMBR` INT NOT NULL DEFAULT COMP_NMBR, -- 학교정보번호(PK)
+	`MAJ`       INT NOT NULL DEFAULT MAJ, -- 전공명
+	`GRD`       INT NOT NULL DEFAULT GRD -- 학년
+);
+
+-- 학교정보
+ALTER TABLE `UNIVERCITY`
+	ADD CONSTRAINT `PK_UNIVERCITY` -- 학교정보 기본키
+		PRIMARY KEY (
+			`UNIV_NMBR` -- 학교정보번호(PK)
+		);
+
+-- 회사정보
+CREATE TABLE `COMPANY` (
+	`COMP_INF` INT         NOT NULL DEFAULT COMP_NMBR, -- 회사정보
+	`COMP_NM`  VARCHAR(50) NOT NULL DEFAULT FREN_NM -- 회사이름
+);
+
+-- 회사정보
+ALTER TABLE `COMPANY`
+	ADD CONSTRAINT `PK_COMPANY` -- 회사정보 기본키
+		PRIMARY KEY (
+			`COMP_INF` -- 회사정보
+		);
+
+-- 친구정보
+ALTER TABLE `FREND`
+	ADD CONSTRAINT `FK_MEMBER_TO_FREND` -- 회원 -> 친구정보
+		FOREIGN KEY (
+			`MMBR_INF` -- 회원정보
+		)
+		REFERENCES `MEMBER` ( -- 회원
+			`MMBR_INF` -- 회원정보
+		);
+
+-- 친구정보
+ALTER TABLE `FREND`
+	ADD CONSTRAINT `FK_UNIVERCITY_TO_FREND` -- 학교정보 -> 친구정보
+		FOREIGN KEY (
+			`UNIV_NMBR` -- 학교정보번호(PK)
+		)
+		REFERENCES `UNIVERCITY` ( -- 학교정보
+			`UNIV_NMBR` -- 학교정보번호(PK)
+		);
+
+-- 친구정보
+ALTER TABLE `FREND`
+	ADD CONSTRAINT `FK_COMPANY_TO_FREND` -- 회사정보 -> 친구정보
+		FOREIGN KEY (
+			`COMP_INF` -- 회사정보
+		)
+		REFERENCES `COMPANY` ( -- 회사정보
+			`COMP_INF` -- 회사정보
+		);
